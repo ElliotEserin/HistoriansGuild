@@ -6,5 +6,8 @@
              x:Class="HistoriansGuild.Views.Repositories.New.AddRepositoryView"
 			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Repositories.New"
 			 x:DataType="vm:AddRepositoryViewModel">
-  Welcome to Avalonia!
+	<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
+		<TextBox Watermark="location" />
+		<Button Content="Add" />
+	</StackPanel>
 </UserControl>
