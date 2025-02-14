@@ -13,6 +13,8 @@ namespace HistoriansGuild.ViewModels.Repositories
         [ObservableProperty]
         private AvaloniaList<Repository> repositories;
 
+        string testRepo = "C:\\Repos\\Personal\\HistoriansGuild";
+
         public RepositoriesViewModel()
         {
             //TODO load repositories from saved data
@@ -24,16 +26,18 @@ namespace HistoriansGuild.ViewModels.Repositories
                 newRepositoryViewModel.NewRepository += OnNewRepository;
                 CurrentViewModel = newRepositoryViewModel;
             }
-
-            //TODO display current repository
-            //CurrentViewModel = new RepositoryViewModel(Repositories[0]);
-            CurrentViewModel = null;
+            else
+            {
+                //TODO display current repository
+                //CurrentViewModel = new RepositoryViewModel(Repositories[0]);
+                CurrentViewModel = new RepositoryViewModel(repositories[0]);
+            }
         }
 
         void OnNewRepository(object? sender, NewRepositoryViewModel.NewRepositoryEventArgs e)
         {
             Repositories.Add(e.NewRepo);
-            //CurrentViewModel = new RepositoryViewModel(e.NewRepo);
+            CurrentViewModel = new RepositoryViewModel(e.NewRepo);
         }
     }
 }
