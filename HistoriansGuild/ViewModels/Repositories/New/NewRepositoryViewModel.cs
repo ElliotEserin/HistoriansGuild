@@ -1,12 +1,7 @@
-﻿using Avalonia.Controls;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using LibGit2Sharp;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HistoriansGuild.ViewModels.Repositories.New
 {
@@ -15,10 +10,25 @@ namespace HistoriansGuild.ViewModels.Repositories.New
         [ObservableProperty]
         private ViewModelBase? currentViewModel;
 
+        public event EventHandler<NewRepositoryEventArgs>? NewRepository;
+
         [RelayCommand]
         void AddRepository()
         {
-            CurrentViewModel = new AddRepositoryViewModel();
+            var addRepositoryViewModel = new AddRepositoryViewModel();
+            addRepositoryViewModel.RepositoryAdded += OnRepositoryAdded;
+
+            CurrentViewModel = addRepositoryViewModel;
+        }
+
+        void OnRepositoryAdded(object? sender, AddRepositoryViewModel.RepositoryAddedEventArgs e)
+        {
+            NewRepository?.Invoke(this, new NewRepositoryEventArgs(e.AddedRepo));
+        }
+
+        public class NewRepositoryEventArgs(Repository newRepo) : EventArgs
+        {
+            public Repository NewRepo { get; } = newRepo;
         }
     }
 }
