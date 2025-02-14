@@ -18,7 +18,7 @@ namespace HistoriansGuild.ViewModels.Repositories
         public RepositoriesViewModel()
         {
             //TODO load repositories from saved data
-            Repositories = [];
+            Repositories = [new Repository(testRepo)];
 
             if(Repositories.Count <= 0)
             {
