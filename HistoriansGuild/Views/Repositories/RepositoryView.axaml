@@ -9,18 +9,15 @@
 			 x:DataType="vm:RepositoryViewModel">
 	<Grid RowDefinitions="*, 1, *">
 		<!-- COMMITS -->
-		<StackPanel Grid.Row="0">
-			<TextBlock Text="Commits:" />
-			<ListBox ItemsSource="{Binding Commits}" SelectedItem="{Binding SelectedCommit}">
-				<ListBox.ItemTemplate>
-					<DataTemplate DataType="{x:Type git:Commit}">
-						<StackPanel>
-							<TextBlock Text="{Binding Message}" />
-						</StackPanel>
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-		</StackPanel>
+		<ListBox Grid.Row="0" ItemsSource="{Binding Commits}" SelectedItem="{Binding SelectedCommit}">
+			<ListBox.ItemTemplate>
+				<DataTemplate DataType="{x:Type git:Commit}">
+					<StackPanel>
+						<TextBlock Text="{Binding MessageShort}" />
+					</StackPanel>
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
 		<GridSplitter Grid.Row="1" ResizeDirection="Rows" />
 		<!-- FILES -->
 		<Panel Grid.Row="2">

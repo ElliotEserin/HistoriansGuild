@@ -20,6 +20,8 @@
 		</ListBox>
 		<GridSplitter Grid.Column="1" ResizeDirection="Columns" />
 		<!-- Diffs -->
-		<TextBlock Grid.Column="2" Text="{Binding SelectedDiff.Patch}" />
+		<ScrollViewer Grid.Column="2">
+			<TextBlock Inlines="{Binding SelectedDiffViewModel.DiffInlines}" />
+		</ScrollViewer>
 	</Grid>
 </UserControl>
