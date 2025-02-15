@@ -12,16 +12,18 @@
 		<ListBox Grid.Column="0" ItemsSource="{Binding Diffs}" SelectedItem="{Binding SelectedDiff}">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
-					<StackPanel>
-						<TextBlock Text="{Binding Path}" />
-					</StackPanel>
+					<TextBlock  Text="{Binding Path}" />
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
 		<GridSplitter Grid.Column="1" ResizeDirection="Columns" />
 		<!-- Diffs -->
-		<ScrollViewer Grid.Column="2">
-			<TextBlock Inlines="{Binding SelectedDiffViewModel.DiffInlines}" />
-		</ScrollViewer>
+		<Border Grid.Column="2">
+			<ScrollViewer HorizontalScrollBarVisibility="Auto">
+				<Grid>
+					<TextBlock Inlines="{Binding SelectedDiffViewModel.DiffInlines}" />
+				</Grid>
+			</ScrollViewer>
+		</Border>
 	</Grid>
 </UserControl>

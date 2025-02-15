@@ -1,0 +1,170 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:p="clr-namespace:HistoriansGuild.Theme">
+  <Design.PreviewWith>
+   <StackPanel Orientation="Horizontal" Spacing="5">
+    <ThemeVariantScope RequestedThemeVariant="Light">
+     <p:Preview />
+    </ThemeVariantScope>
+    <ThemeVariantScope RequestedThemeVariant="Dark">
+     <p:Preview />
+    </ThemeVariantScope>
+   </StackPanel>
+  </Design.PreviewWith>
+
+  <!-- Styles -->
+	<Style Selector="Window">
+		<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		<Setter Property="FontSize" Value="32" />
+		<Setter Property="FontFamily" Value="{StaticResource Monogram}" />
+	</Style>
+
+	<Style Selector="Border">
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="BorderBrush" Value="{DynamicResource BackgroundAccentBrush}" />
+	</Style>
+
+	<Style Selector="ListBox">
+		<Setter Property="Background" Value="Transparent" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="BorderBrush" Value="{DynamicResource BackgroundAccentBrush}" />
+	</Style>
+
+	<Style Selector="ListBoxItem">
+		<Style Selector="^:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource BackgroundAccentBrush}" />
+		</Style>
+		<Style Selector="^:selected /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource MediumBrush}" />
+		</Style>
+		<Style Selector="^:selected:focus /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource MediumBrush}" />
+		</Style>
+		<Style Selector="^:selected:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource ForegroundAccentBrush}" />
+		</Style>
+		<Style Selector="^:selected:focus:pointerover /template/ ContentPresenter">
+			<Setter Property="Background" Value="{DynamicResource ForegroundAccentBrush}" />
+		</Style>
+	</Style>
+
+	<Style Selector="ScrollBar">
+		<Style Selector="^:horizontal">
+			<Setter Property="Height" Value="8" />
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Background="Transparent"
+							BorderThickness="0"
+							UseLayoutRounding="False">
+						<Track Grid.Row="1"
+							   Grid.Column="1"
+							   Maximum="{TemplateBinding Maximum}"
+							   Minimum="{TemplateBinding Minimum}"
+							   Orientation="{TemplateBinding Orientation}"
+							   ViewportSize="{TemplateBinding ViewportSize}"
+							   DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+							   Value="{TemplateBinding Value,
+                                             Mode=TwoWay}">
+							<Track.DecreaseButton>
+								<RepeatButton Name="PART_PageUpButton"
+											  Classes="repeattrack"
+											  Focusable="False"
+											  Background="Transparent"
+											  BorderThickness="0"/>
+							</Track.DecreaseButton>
+							<Track.IncreaseButton>
+								<RepeatButton Name="PART_PageDownButton"
+											  Classes="repeattrack"
+											  Focusable="False"
+											  Background="Transparent"
+											  BorderThickness="0"/>
+							</Track.IncreaseButton>
+							<Thumb Name="thumb" />
+						</Track>
+					</Border>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+		<Style Selector="^:vertical">
+			<Setter Property="Width" Value="8" />
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Background="Transparent"
+							BorderThickness="0"
+							UseLayoutRounding="False">
+						<Track Grid.Row="1"
+							   Grid.Column="1"
+							   IsDirectionReversed="True"
+							   Maximum="{TemplateBinding Maximum}"
+							   Minimum="{TemplateBinding Minimum}"
+							   Orientation="{TemplateBinding Orientation}"
+							   ViewportSize="{TemplateBinding ViewportSize}"
+							   DeferThumbDrag="{TemplateBinding ScrollViewer.IsDeferredScrollingEnabled}"
+							   Value="{TemplateBinding Value,
+                                             Mode=TwoWay}">
+							<Track.DecreaseButton>
+								<RepeatButton Name="PART_PageUpButton"
+											  Classes="repeattrack"
+											  Focusable="False"
+											  Background="Transparent"
+											  BorderThickness="0"/>
+							</Track.DecreaseButton>
+							<Track.IncreaseButton>
+								<RepeatButton Name="PART_PageDownButton"
+											  Classes="repeattrack"
+											  Focusable="False"
+											  Background="Transparent"
+											  BorderThickness="0"/>
+							</Track.IncreaseButton>
+							<Thumb Name="thumb" />
+						</Track>
+					</Border>
+				</ControlTemplate>
+			</Setter>
+		</Style>
+		<Style Selector="^ /template/ Thumb#thumb">
+			<Setter Property="Background" Value="{DynamicResource ForegroundBrush}" />
+			<Setter Property="Template">
+				<Setter.Value>
+					<ControlTemplate>
+						<Border Background="{TemplateBinding Background}" BorderThickness="0"/>
+					</ControlTemplate>
+				</Setter.Value>
+			</Setter>
+		</Style>
+		<Style Selector="^ /template/ Thumb#thumb:pointerover">
+			<Setter Property="Background" Value="{DynamicResource ForegroundAccentBrush}" />
+		</Style>
+		<Style Selector="^ /template/ Thumb#thumb:pressed">
+			<Setter Property="Background" Value="{DynamicResource MediumBrush}" />
+		</Style>
+		<Style Selector="^:horizontal /template/ Thumb#thumb">
+			<Setter Property="MinWidth" Value="{DynamicResource ScrollBarThickness}" />
+			<Setter Property="Height" Value="8" />
+		</Style>
+		<Style Selector="^:vertical /template/ Thumb#thumb">
+			<Setter Property="MinHeight" Value="{DynamicResource ScrollBarThickness}" />
+			<Setter Property="Width" Value="8" />
+		</Style>
+		<Style Selector="^ /template/ RepeatButton.repeat">
+			<Setter Property="Padding" Value="2" />
+			<Setter Property="BorderThickness" Value="0" />
+		</Style>
+		<Style Selector="^ /template/ RepeatButton.repeattrack">
+			<Setter Property="Template">
+				<ControlTemplate>
+					<Border Background="Transparent" BorderThickness="0" />
+				</ControlTemplate>
+			</Setter>
+		</Style>
+
+		<Style Selector="^ /template/ RepeatButton > Path">
+			<Setter Property="Fill" Value="{DynamicResource ForegroundBrush}" />
+		</Style>
+
+		<Style Selector="^ /template/ RepeatButton:pointerover > Path">
+			<Setter Property="Fill" Value="{DynamicResource ForegroundAccentBrush}" />
+		</Style>
+	</Style>
+</Styles>

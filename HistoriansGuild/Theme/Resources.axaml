@@ -1,0 +1,28 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"  
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">  
+	<ResourceDictionary.ThemeDictionaries>  
+		<ResourceDictionary x:Key='Default'>
+			<Color x:Key='ForegroundColor'>#355070</Color>
+			<Color x:Key='ForegroundAccentColor'>#6d597a</Color>
+			<Color x:Key='MediumColor'>#b56576</Color>
+			<Color x:Key='BackgroundAccentColor'>#e56b6f</Color>
+			<Color x:Key='BackgroundColor'>#eaac8b</Color>
+		</ResourceDictionary>  
+		<ResourceDictionary x:Key='Dark'>  
+			<Color x:Key='BackgroundColor'>#355070</Color>
+			<Color x:Key='BackgroundAccentColor'>#6d597a</Color>
+			<Color x:Key='MediumColor'>#b56576</Color>
+			<Color x:Key='ForegroundAccentColor'>#e56b6f</Color>
+			<Color x:Key='ForegroundColor'>#eaac8b</Color>
+		</ResourceDictionary>  
+	</ResourceDictionary.ThemeDictionaries>  
+
+	<FontFamily x:Key="Monogram">avares://HistoriansGuild/Assets/Fonts#monogram</FontFamily> 
+
+	<SolidColorBrush x:Key='BackgroundBrush' Color='{DynamicResource BackgroundColor}' />  
+	<SolidColorBrush x:Key='ForegroundBrush' Color='{DynamicResource ForegroundColor}' />  
+	<SolidColorBrush x:Key='ForegroundAccentBrush' Color='{DynamicResource ForegroundAccentColor}' />  
+	<SolidColorBrush x:Key='BackgroundAccentBrush' Color='{DynamicResource BackgroundAccentColor}' />  
+	<SolidColorBrush x:Key='MediumBrush' Color='{DynamicResource MediumColor}' />  
+	<SolidColorBrush x:Key='ThemeControlMidBrush' Color='{DynamicResource BackgroundColor}' />
+</ResourceDictionary>

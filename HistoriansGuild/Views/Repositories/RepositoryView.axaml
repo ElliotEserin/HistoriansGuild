@@ -12,9 +12,7 @@
 		<ListBox Grid.Row="0" ItemsSource="{Binding Commits}" SelectedItem="{Binding SelectedCommit}">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type git:Commit}">
-					<StackPanel>
-						<TextBlock Text="{Binding MessageShort}" />
-					</StackPanel>
+					<TextBlock Text="{Binding MessageShort}" />
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>
