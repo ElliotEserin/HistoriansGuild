@@ -10,15 +10,12 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
         [ObservableProperty]
         private InlineCollection diffInlines;
 
-        private PatchEntryChanges diff;
-
         public DiffViewModel(PatchEntryChanges diff)
         {
-            this.diff = diff;
-            diffInlines = ParseDiff();
+            diffInlines = ParseDiff(diff);
         }
 
-        public InlineCollection ParseDiff()
+        public InlineCollection ParseDiff(PatchEntryChanges diff)
         {
             var inlines = new InlineCollection();
 

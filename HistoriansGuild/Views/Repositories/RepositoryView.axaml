@@ -7,19 +7,19 @@
 			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Repositories"
 			 xmlns:git="using:LibGit2Sharp"
 			 x:DataType="vm:RepositoryViewModel">
-	<Grid RowDefinitions="*, 1, *">
-		<!-- COMMITS -->
-		<ListBox Grid.Row="0" ItemsSource="{Binding Commits}" SelectedItem="{Binding SelectedCommit}">
-			<ListBox.ItemTemplate>
-				<DataTemplate DataType="{x:Type git:Commit}">
-					<TextBlock Text="{Binding MessageShort}" />
-				</DataTemplate>
-			</ListBox.ItemTemplate>
-		</ListBox>
-		<GridSplitter Grid.Row="1" ResizeDirection="Rows" />
-		<!-- FILES -->
-		<Panel Grid.Row="2">
-			<ContentControl Content="{Binding SelectedCommitViewModel}" />
-		</Panel>
+	<Grid RowDefinitions="38, *">
+		<StackPanel Grid.Row="0" Orientation="Horizontal">
+			<Button Content="Push" />
+			<Button Content="Pull" />
+			<Button Content="Fetch" />
+		</StackPanel>
+		<TabControl Grid.Row="1">
+			<TabItem Header="History">
+				<ContentControl Content="{Binding HistoryViewModel}" />
+			</TabItem>
+			<TabItem Header="Staging">
+				<ContentControl Content="{Binding StagingViewModel}" />
+			</TabItem>
+		</TabControl>
 	</Grid>
 </UserControl>

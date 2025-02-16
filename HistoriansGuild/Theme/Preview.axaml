@@ -6,7 +6,7 @@
              x:Class="HistoriansGuild.Theme.Preview">
 	<Border Padding="5">
 		<ScrollViewer>
-			<StackPanel>
+			<StackPanel Width="200">
 				<TextBlock Text="Text" />
 				<Label Content="Button:" />
 				<Button Content="Button" />
@@ -15,6 +15,14 @@
 					<ListBoxItem>Item 2</ListBoxItem>
 					<ListBoxItem>Item 3</ListBoxItem>
 				</ListBox>
+				<TabControl>
+					<TabItem Header="Tab 1">
+						<TextBlock Text="Tab 1 Content" />
+					</TabItem>
+					<TabItem Header="Tab 2">
+						<TextBlock Text="Tab 1 Content" />
+					</TabItem>
+				</TabControl>
 			</StackPanel>
 		</ScrollViewer>
 	</Border>

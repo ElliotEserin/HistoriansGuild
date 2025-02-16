@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HistoriansGuild.Helpers;
 using LibGit2Sharp;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace HistoriansGuild.ViewModels.Repositories.Commits
@@ -25,14 +24,7 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
             this.commit = commit;
             this.repository = repository;
 
-            diffs = GetDiff();
-        }
-
-        public PatchEntryChanges[] GetDiff()
-        {
-            var parentCommit = commit.Parents.FirstOrDefault();
-            var changes = repository.Diff.Compare<Patch>(parentCommit?.Tree, commit.Tree);
-            return changes.ToArray();
+            diffs = this.repository.GetDiff(this.commit);
         }
 
         partial void OnSelectedDiffChanged(PatchEntryChanges? value)

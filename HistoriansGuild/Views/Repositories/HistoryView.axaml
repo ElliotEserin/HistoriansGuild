@@ -1,0 +1,25 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HistoriansGuild.Views.Repositories.HistoryView"
+			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Repositories"
+			 x:DataType="vm:HistoryViewModel"
+			 xmlns:git="using:LibGit2Sharp">
+	<Grid RowDefinitions="*, 2, *">
+		<!-- COMMITS -->
+		<ListBox Grid.Row="0" ItemsSource="{Binding Commits}" SelectedItem="{Binding SelectedCommit}">
+			<ListBox.ItemTemplate>
+				<DataTemplate DataType="{x:Type git:Commit}">
+					<TextBlock Text="{Binding MessageShort}" />
+				</DataTemplate>
+			</ListBox.ItemTemplate>
+		</ListBox>
+		<GridSplitter Grid.Row="1" ResizeDirection="Rows" />
+		<!-- FILES -->
+		<Panel Grid.Row="2">
+			<ContentControl Content="{Binding SelectedCommitViewModel}" />
+		</Panel>
+	</Grid>
+</UserControl>

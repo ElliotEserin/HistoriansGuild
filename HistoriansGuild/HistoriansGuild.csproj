@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <None Remove="Assets\Fonts\monogram.ttf" />
+    <None Remove="Assets\Fonts\Ruler.ttf" />
   </ItemGroup>
 
   <ItemGroup>

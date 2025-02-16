@@ -192,4 +192,35 @@
 			<Setter Property="BorderBrush" Value="Transparent" />
 		</Style>
 	</Style>
+
+	<Style Selector="TabItem">
+		<Setter	Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		<Setter Property="Background" Value="{DynamicResource Transparent}" />
+		<Setter Property="BorderThickness" Value="4" />
+		<Setter Property="FontSize" Value="32" />
+				
+		<Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
+		  <Setter Property="Background" Value="{DynamicResource BackgroundAccentBrush}" />
+		</Style>
+		<Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		  <Setter Property="Background" Value="{DynamicResource ForegroundAccentColor}" />
+			<Setter	Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
+		</Style>
+		<Style Selector="^:selected /template/ ContentPresenter#PART_ContentPresenter">
+		  <Setter Property="Background" Value="{DynamicResource ForegroundBrush}" />
+			<Setter	Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
+		</Style>
+		<Style Selector="^:selected:focus /template/ ContentPresenter#PART_ContentPresenter">
+		  <Setter Property="Background" Value="{DynamicResource ForegroundBrush}" />
+			<Setter	Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
+		</Style>
+		<Style Selector="^:selected:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		  <Setter Property="Background" Value="{DynamicResource ForegroundAccentBrush}" />
+			<Setter	Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
+		</Style>
+		<Style Selector="^:selected:focus:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+		  <Setter Property="Background" Value="{DynamicResource ForegroundAccentBrush}" />
+			<Setter	Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
+		</Style>
+	</Style>
 </Styles>

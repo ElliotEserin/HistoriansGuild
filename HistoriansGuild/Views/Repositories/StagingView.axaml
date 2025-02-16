@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HistoriansGuild.Views.Repositories.StagingView"
+			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Repositories"
+			 x:DataType="vm:StagingViewModel"
+			 xmlns:git="using:LibGit2Sharp">
+	<Grid ColumnDefinitions="*, 2, *">
+		<!-- Files -->
+		<Grid RowDefinitions="*, *">
+			<ListBox Grid.Row="0" ItemsSource="{Binding StagedChanges}" SelectedItem="{Binding SelectedChange}">
+				<ListBox.ItemTemplate>
+					<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
+						<TextBlock  Text="{Binding Path}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+			<ListBox Grid.Row="1" ItemsSource="{Binding UnstagedChanges}" SelectedItem="{Binding SelectedChange}">
+				<ListBox.ItemTemplate>
+					<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
+						<TextBlock  Text="{Binding Path}" />
+					</DataTemplate>
+				</ListBox.ItemTemplate>
+			</ListBox>
+		</Grid>
+		<GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+		<!-- Diffs -->
+		<Border Grid.Column="2">
+			<ScrollViewer HorizontalScrollBarVisibility="Auto">
+				<Grid>
+					<TextBlock Inlines="{Binding SelectedChangeViewModel.DiffInlines}" />
+				</Grid>
+			</ScrollViewer>
+		</Border>
+	</Grid>
+</UserControl>

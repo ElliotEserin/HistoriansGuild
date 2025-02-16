@@ -7,7 +7,7 @@
 			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Repositories.Commits"
 			 xmlns:git="using:LibGit2Sharp"
 			 x:DataType="vm:CommitViewModel">
-	<Grid ColumnDefinitions="*, 1, *">
+	<Grid ColumnDefinitions="*, 2, *">
 		<!-- Files -->
 		<ListBox Grid.Column="0" ItemsSource="{Binding Diffs}" SelectedItem="{Binding SelectedDiff}">
 			<ListBox.ItemTemplate>
