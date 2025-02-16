@@ -12,7 +12,13 @@
 		<ListBox Grid.Row="0" ItemsSource="{Binding Commits}" SelectedItem="{Binding SelectedCommit}">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type git:Commit}">
-					<TextBlock Text="{Binding MessageShort}" />
+					<Grid ColumnDefinitions="*, *">
+						<TextBlock Grid.Column="0" Text="{Binding MessageShort}" />
+						<StackPanel HorizontalAlignment="Right" Grid.Column="1" Orientation="Horizontal" Spacing="16">
+							<TextBlock TextAlignment="Right" Grid.Column="1" Text="{Binding Committer.Name}" />
+							<TextBlock TextAlignment="Right" Grid.Column="2" Text="{Binding Committer.When, Converter={StaticResource DateToStringConverter}}" />
+						</StackPanel>
+					</Grid>
 				</DataTemplate>
 			</ListBox.ItemTemplate>
 		</ListBox>

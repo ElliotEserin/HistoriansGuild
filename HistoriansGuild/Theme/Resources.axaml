@@ -1,5 +1,6 @@
 <ResourceDictionary xmlns="https://github.com/avaloniaui"  
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">  
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+					xmlns:c="clr-namespace:HistoriansGuild.Converters">  
 	<ResourceDictionary.ThemeDictionaries>  
 		<ResourceDictionary x:Key='Default'>
 			<Color x:Key='ForegroundColor'>#355070</Color>
@@ -25,4 +26,7 @@
 	<SolidColorBrush x:Key='BackgroundAccentBrush' Color='{DynamicResource BackgroundAccentColor}' />  
 	<SolidColorBrush x:Key='MediumBrush' Color='{DynamicResource MediumColor}' />  
 	<SolidColorBrush x:Key='ThemeControlMidBrush' Color='{DynamicResource BackgroundColor}' />
+	
+	<!-- CONVERTERS -->
+	<c:DateToStringConverter x:Key="DateToStringConverter" />
 </ResourceDictionary>
