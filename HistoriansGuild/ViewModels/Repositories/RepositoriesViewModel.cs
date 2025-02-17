@@ -40,5 +40,13 @@ namespace HistoriansGuild.ViewModels.Repositories
             Repositories.Add(e.NewRepo);
             CurrentViewModel = new RepositoryViewModel(e.NewRepo);
         }
+
+        ~RepositoriesViewModel()
+        {
+            foreach (var repo in Repositories)
+            {
+                repo.Dispose();
+            }
+        }
     }
 }
