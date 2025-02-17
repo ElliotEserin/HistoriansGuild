@@ -5,33 +5,50 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="HistoriansGuild.Views.Repositories.StagingView"
 			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Repositories"
+			 xmlns:commit="clr-namespace:HistoriansGuild.ViewModels.Repositories.Commits"
 			 x:DataType="vm:StagingViewModel"
 			 xmlns:git="using:LibGit2Sharp">
 	<Grid ColumnDefinitions="*, 2, *">
 		<!-- Files -->
 		<Grid RowDefinitions="*, *">
-			<ListBox Grid.Row="0" ItemsSource="{Binding StagedChanges}" SelectedItem="{Binding SelectedChange}">
-				<ListBox.ItemTemplate>
-					<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
-						<TextBlock  Text="{Binding Path}" />
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
-			<ListBox Grid.Row="1" ItemsSource="{Binding UnstagedChanges}" SelectedItem="{Binding SelectedChange}">
-				<ListBox.ItemTemplate>
-					<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
-						<TextBlock  Text="{Binding Path}" />
-					</DataTemplate>
-				</ListBox.ItemTemplate>
-			</ListBox>
+			<Grid Grid.Row="0" RowDefinitions="32, *">
+				<StackPanel Grid.Row="0" Orientation="Horizontal">
+					<Button Content="Unstage All" />
+					<Button Content="Unstage Selected" />
+				</StackPanel>
+				<ListBox Grid.Row="1" SelectionMode="Multiple" ItemsSource="{Binding StagedChanges}" SelectedItems="{Binding SelectedChanges}">
+					<ListBox.ItemTemplate>
+						<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
+							<TextBlock Text="{Binding Path}" />
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
+			<Grid Grid.Row="1" RowDefinitions="32, *">
+				<StackPanel Grid.Row="0" Orientation="Horizontal">
+					<Button Content="Stage All" />
+					<Button Content="Stage Selected" />
+				</StackPanel>
+				<ListBox Grid.Row="1" SelectionMode="Multiple" ItemsSource="{Binding UnstagedChanges}" SelectedItems="{Binding SelectedChanges}">
+					<ListBox.ItemTemplate>
+						<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
+							<TextBlock Text="{Binding Path}" />
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</Grid>
 		</Grid>
 		<GridSplitter Grid.Column="1" ResizeDirection="Columns" />
 		<!-- Diffs -->
 		<Border Grid.Column="2">
 			<ScrollViewer HorizontalScrollBarVisibility="Auto">
-				<Grid>
-					<TextBlock Inlines="{Binding SelectedChangeViewModel.DiffInlines}" />
-				</Grid>
+				<ItemsControl ItemsSource="{Binding SelectedChangesViewModels}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="{x:Type commit:DiffViewModel}">
+							<ContentControl Content="{Binding}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</ScrollViewer>
 		</Border>
 	</Grid>

@@ -9,7 +9,7 @@
 			 x:DataType="vm:CommitViewModel">
 	<Grid ColumnDefinitions="*, 2, *">
 		<!-- Files -->
-		<ListBox Grid.Column="0" ItemsSource="{Binding Diffs}" SelectedItem="{Binding SelectedDiff}">
+		<ListBox Grid.Column="0" SelectionMode="Multiple" ItemsSource="{Binding Diffs}" SelectedItems="{Binding SelectedChanges}">
 			<ListBox.ItemTemplate>
 				<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
 					<TextBlock  Text="{Binding Path}" />
@@ -20,9 +20,13 @@
 		<!-- Diffs -->
 		<Border Grid.Column="2">
 			<ScrollViewer HorizontalScrollBarVisibility="Auto">
-				<Grid>
-					<TextBlock Inlines="{Binding SelectedDiffViewModel.DiffInlines}" />
-				</Grid>
+				<ItemsControl ItemsSource="{Binding SelectedChangesViewModels}">
+					<ItemsControl.ItemTemplate>
+						<DataTemplate DataType="{x:Type vm:DiffViewModel}">
+							<ContentControl Content="{Binding}" />
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
 			</ScrollViewer>
 		</Border>
 	</Grid>

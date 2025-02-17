@@ -18,7 +18,7 @@
 		</ResourceDictionary>  
 	</ResourceDictionary.ThemeDictionaries>  
 
-	<FontFamily x:Key="Monogram">avares://HistoriansGuild/Assets/Fonts#monogram</FontFamily> 
+	<FontFamily x:Key="Monogram">avares://HistoriansGuild/Assets/Fonts#Ubuntu Mono</FontFamily> 
 
 	<SolidColorBrush x:Key='BackgroundBrush' Color='{DynamicResource BackgroundColor}' />  
 	<SolidColorBrush x:Key='ForegroundBrush' Color='{DynamicResource ForegroundColor}' />  

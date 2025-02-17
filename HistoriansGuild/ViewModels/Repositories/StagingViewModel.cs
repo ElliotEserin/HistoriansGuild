@@ -1,7 +1,10 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using Avalonia.Collections;
+using CommunityToolkit.Mvvm.ComponentModel;
 using HistoriansGuild.Helpers;
 using HistoriansGuild.ViewModels.Repositories.Commits;
 using LibGit2Sharp;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Diagnostics;
 
 namespace HistoriansGuild.ViewModels.Repositories
@@ -17,10 +20,10 @@ namespace HistoriansGuild.ViewModels.Repositories
         private PatchEntryChanges[] unstagedChanges;
 
         [ObservableProperty]
-        private PatchEntryChanges? selectedChange;
+        private ObservableCollection<PatchEntryChanges> selectedChanges = [];
 
         [ObservableProperty]
-        private DiffViewModel? selectedChangeViewModel;
+        private ObservableCollection<DiffViewModel> selectedChangesViewModels = [];
 
         public StagingViewModel(Repository repository)
         {
@@ -28,11 +31,18 @@ namespace HistoriansGuild.ViewModels.Repositories
 
             stagedChanges = this.repository.GetStagedChanges();
             unstagedChanges = this.repository.GetUnstagedChanges();
+
+            selectedChanges.CollectionChanged += OnCollectionChanged;
         }
 
-        partial void OnSelectedChangeChanged(PatchEntryChanges? value)
+        void OnCollectionChanged(object? o, NotifyCollectionChangedEventArgs e)
         {
-            SelectedChangeViewModel = value != null ? new DiffViewModel(value) : null;
+            SelectedChangesViewModels.Clear();
+
+            for (int i = 0; i < SelectedChanges.Count; i++)
+            {
+                SelectedChangesViewModels.Add(new DiffViewModel(SelectedChanges[i]));
+            }
         }
     }
 }

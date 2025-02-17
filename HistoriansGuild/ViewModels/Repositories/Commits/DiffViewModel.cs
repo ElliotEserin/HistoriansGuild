@@ -8,10 +8,18 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
     public partial class DiffViewModel : ViewModelBase
     {
         [ObservableProperty]
+        private string filename;
+
+        [ObservableProperty]
+        private string status;
+
+        [ObservableProperty]
         private InlineCollection diffInlines;
 
         public DiffViewModel(PatchEntryChanges diff)
         {
+            Filename = diff.Path;
+            Status = diff.Status.ToString();
             diffInlines = ParseDiff(diff);
         }
 

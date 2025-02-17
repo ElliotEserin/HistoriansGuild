@@ -1,6 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HistoriansGuild.Helpers;
 using LibGit2Sharp;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace HistoriansGuild.ViewModels.Repositories.Commits
@@ -11,10 +13,10 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
         private PatchEntryChanges[] diffs;
 
         [ObservableProperty]
-        private PatchEntryChanges? selectedDiff;
-        
+        private ObservableCollection<PatchEntryChanges> selectedChanges = [];
+
         [ObservableProperty]
-        private DiffViewModel? selectedDiffViewModel;
+        private ObservableCollection<DiffViewModel> selectedChangesViewModels = [];
 
         private readonly Commit commit;
         private readonly Repository repository;
@@ -25,11 +27,18 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
             this.repository = repository;
 
             diffs = this.repository.GetDiff(this.commit);
+
+            selectedChanges.CollectionChanged += OnCollectionChanged;
         }
 
-        partial void OnSelectedDiffChanged(PatchEntryChanges? value)
+        void OnCollectionChanged(object? o, NotifyCollectionChangedEventArgs e)
         {
-            SelectedDiffViewModel = value != null ? new DiffViewModel(value) : null;
+            SelectedChangesViewModels.Clear();
+
+            for (int i = 0; i < SelectedChanges.Count; i++)
+            {
+                SelectedChangesViewModels.Add(new DiffViewModel(SelectedChanges[i]));
+            }
         }
     }
 }
