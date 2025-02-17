@@ -1,4 +1,6 @@
 ﻿using LibGit2Sharp;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace HistoriansGuild.Helpers
@@ -14,22 +16,56 @@ namespace HistoriansGuild.Helpers
 
         public static PatchEntryChanges[] GetDiff(this Repository repository, StatusEntry[] selectedFiles)
         {
-            var selectedFilePaths = new string[selectedFiles.Length];
+            if (selectedFiles == null || selectedFiles.Length == 0)
+                return [];
 
-            for (int i = 0; i < selectedFiles.Length; i++)
+            var result = new List<PatchEntryChanges>();
+
+            // Group files by their status
+            var stagedFiles = selectedFiles
+                .Where(file => file.State.HasFlag(FileStatus.NewInIndex) ||
+                                file.State.HasFlag(FileStatus.ModifiedInIndex) ||
+                               file.State.HasFlag(FileStatus.DeletedFromIndex))
+                .Select(file => file.FilePath)
+                .ToArray();
+
+            var unstagedFiles = selectedFiles
+                .Where(file => file.State.HasFlag(FileStatus.ModifiedInWorkdir) ||
+                               file.State.HasFlag(FileStatus.DeletedFromWorkdir) ||
+                               file.State.HasFlag(FileStatus.NewInWorkdir))
+                .Select(file => file.FilePath)
+                .ToArray();
+
+            // Get staged changes by comparing index with HEAD
+            if (stagedFiles.Length > 0)
             {
-                selectedFilePaths[i] = selectedFiles[i].FilePath;
+                var changes = repository.Diff.Compare<Patch>(
+                    repository.Head.Tip.Tree,
+                    DiffTargets.Index,
+                    stagedFiles
+                );
+                result.AddRange(changes);
             }
 
-            var changes = repository.Diff.Compare<Patch>(selectedFilePaths, true);
-            return changes.ToArray();
+            // Get unstaged changes by comparing working directory with index
+            if (unstagedFiles.Length > 0)
+            {
+                var changes = repository.Diff.Compare<Patch>(unstagedFiles, true);
+                result.AddRange(changes);
+            }
+
+            return result.ToArray();
         }
 
         public static PatchEntryChanges[] GetStagedChanges(this Repository repository)
         {
-            StatusEntry[] status = repository.RetrieveStatus().Staged.ToArray();
+            StatusEntry[] status = repository.RetrieveStatus().Where(e => 
+            e.State.HasFlag(FileStatus.NewInIndex) ||
+            e.State.HasFlag(FileStatus.ModifiedInIndex) ||
+            e.State.HasFlag(FileStatus.DeletedFromIndex)
+            ).ToArray();
 
-            if(status.Length > 0)
+            if (status.Length > 0)
                 return repository.GetDiff(status);
 
             return [];

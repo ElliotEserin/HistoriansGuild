@@ -13,10 +13,10 @@
 		<Grid RowDefinitions="*, *">
 			<Grid Grid.Row="0" RowDefinitions="32, *">
 				<StackPanel Grid.Row="0" Orientation="Horizontal">
-					<Button Content="Unstage All" />
-					<Button Content="Unstage Selected" />
+					<Button Content="Unstage All" Command="{Binding UnstageAllCommand}" />
+					<Button Content="Unstage Selected" Command="{Binding UnstageSelectedCommand}" />
 				</StackPanel>
-				<ListBox Grid.Row="1" SelectionMode="Multiple" ItemsSource="{Binding StagedChanges}" SelectedItems="{Binding SelectedChanges}">
+				<ListBox Grid.Row="1" SelectionMode="Multiple" ItemsSource="{Binding StagedChanges}" SelectedItems="{Binding SelectedStagedChanges}">
 					<ListBox.ItemTemplate>
 						<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
 							<TextBlock Text="{Binding Path}" />
@@ -26,10 +26,10 @@
 			</Grid>
 			<Grid Grid.Row="1" RowDefinitions="32, *">
 				<StackPanel Grid.Row="0" Orientation="Horizontal">
-					<Button Content="Stage All" />
-					<Button Content="Stage Selected" />
+					<Button Content="Stage All" Command="{Binding StageAllCommand}" />
+					<Button Content="Stage Selected" Command="{Binding StageSelectedCommand}" />
 				</StackPanel>
-				<ListBox Grid.Row="1" SelectionMode="Multiple" ItemsSource="{Binding UnstagedChanges}" SelectedItems="{Binding SelectedChanges}">
+				<ListBox Grid.Row="1" SelectionMode="Multiple" ItemsSource="{Binding UnstagedChanges}" SelectedItems="{Binding SelectedUnstagedChanges}">
 					<ListBox.ItemTemplate>
 						<DataTemplate DataType="{x:Type git:PatchEntryChanges}">
 							<TextBlock Text="{Binding Path}" />

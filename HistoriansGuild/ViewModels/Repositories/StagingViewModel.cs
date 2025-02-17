@@ -1,5 +1,6 @@
 ﻿using Avalonia.Collections;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using HistoriansGuild.Helpers;
 using HistoriansGuild.ViewModels.Repositories.Commits;
 using LibGit2Sharp;
@@ -20,7 +21,10 @@ namespace HistoriansGuild.ViewModels.Repositories
         private PatchEntryChanges[] unstagedChanges;
 
         [ObservableProperty]
-        private ObservableCollection<PatchEntryChanges> selectedChanges = [];
+        private ObservableCollection<PatchEntryChanges> selectedStagedChanges = [];
+
+        [ObservableProperty]
+        private ObservableCollection<PatchEntryChanges> selectedUnstagedChanges = [];
 
         [ObservableProperty]
         private ObservableCollection<DiffViewModel> selectedChangesViewModels = [];
@@ -29,20 +33,64 @@ namespace HistoriansGuild.ViewModels.Repositories
         {
             this.repository = repository;
 
-            stagedChanges = this.repository.GetStagedChanges();
-            unstagedChanges = this.repository.GetUnstagedChanges();
+            StagedChanges = this.repository.GetStagedChanges();
+            UnstagedChanges = this.repository.GetUnstagedChanges();
 
-            selectedChanges.CollectionChanged += OnCollectionChanged;
+            SelectedStagedChanges.CollectionChanged += OnCollectionChanged;
+            SelectedUnstagedChanges.CollectionChanged += OnCollectionChanged;
         }
 
         void OnCollectionChanged(object? o, NotifyCollectionChangedEventArgs e)
         {
             SelectedChangesViewModels.Clear();
 
-            for (int i = 0; i < SelectedChanges.Count; i++)
+            foreach (var change in SelectedStagedChanges)
             {
-                SelectedChangesViewModels.Add(new DiffViewModel(SelectedChanges[i]));
+                SelectedChangesViewModels.Add(new DiffViewModel(change));
             }
+
+            foreach (var change in SelectedUnstagedChanges)
+            {
+                SelectedChangesViewModels.Add(new DiffViewModel(change));
+            }
+        }
+
+        [RelayCommand]
+        public void StageAll()
+        {
+            Commands.Stage(repository, "*");
+        }
+
+        [RelayCommand]
+        public void StageSelected()
+        {
+            string[] paths = new string[SelectedUnstagedChanges.Count];
+
+            for (int i = 0; i < SelectedUnstagedChanges.Count; i++)
+            {
+                paths[i] = SelectedUnstagedChanges[i].Path;
+            }
+
+            Commands.Stage(repository, paths);
+        }
+
+        [RelayCommand]
+        public void UnstageAll()
+        {
+            Commands.Unstage(repository, "*");
+        }
+
+        [RelayCommand]
+        public void UnstageSelected()
+        {
+            string[] paths = new string[SelectedStagedChanges.Count];
+
+            for (int i = 0; i < SelectedStagedChanges.Count; i++)
+            {
+                paths[i] = SelectedStagedChanges[i].Path;
+            }
+
+            Commands.Unstage(repository, paths);
         }
     }
 }
