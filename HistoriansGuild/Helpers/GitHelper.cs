@@ -14,44 +14,36 @@ namespace HistoriansGuild.Helpers
             return changes.ToArray();
         }
 
-        public static PatchEntryChanges[] GetDiff(this Repository repository, StatusEntry[] selectedFiles)
+        public static PatchEntryChanges[] GetDiff(this Repository repository, StatusEntry[] selectedFiles, bool staged)
         {
             if (selectedFiles == null || selectedFiles.Length == 0)
                 return [];
 
             var result = new List<PatchEntryChanges>();
 
-            // Group files by their status
-            var stagedFiles = selectedFiles
-                .Where(file => file.State.HasFlag(FileStatus.NewInIndex) ||
-                                file.State.HasFlag(FileStatus.ModifiedInIndex) ||
-                               file.State.HasFlag(FileStatus.DeletedFromIndex))
-                .Select(file => file.FilePath)
-                .ToArray();
+            var files = selectedFiles.Select(e => e.FilePath).ToArray();
 
-            var unstagedFiles = selectedFiles
-                .Where(file => file.State.HasFlag(FileStatus.ModifiedInWorkdir) ||
-                               file.State.HasFlag(FileStatus.DeletedFromWorkdir) ||
-                               file.State.HasFlag(FileStatus.NewInWorkdir))
-                .Select(file => file.FilePath)
-                .ToArray();
-
-            // Get staged changes by comparing index with HEAD
-            if (stagedFiles.Length > 0)
+            if (staged)
             {
-                var changes = repository.Diff.Compare<Patch>(
-                    repository.Head.Tip.Tree,
-                    DiffTargets.Index,
-                    stagedFiles
-                );
-                result.AddRange(changes);
+                // Get staged changes by comparing index with HEAD
+                if (selectedFiles.Length > 0)
+                {
+                    var changes = repository.Diff.Compare<Patch>(
+                        repository.Head.Tip.Tree,
+                        DiffTargets.Index,
+                        files
+                    );
+                    result.AddRange(changes);
+                }
             }
-
-            // Get unstaged changes by comparing working directory with index
-            if (unstagedFiles.Length > 0)
+            else
             {
-                var changes = repository.Diff.Compare<Patch>(unstagedFiles, true);
-                result.AddRange(changes);
+                // Get unstaged changes by comparing working directory with index
+                if (selectedFiles.Length > 0)
+                {
+                    var changes = repository.Diff.Compare<Patch>(files, true);
+                    result.AddRange(changes);
+                }
             }
 
             return result.ToArray();
@@ -65,10 +57,7 @@ namespace HistoriansGuild.Helpers
             e.State.HasFlag(FileStatus.DeletedFromIndex)
             ).ToArray();
 
-            if (status.Length > 0)
-                return repository.GetDiff(status);
-
-            return [];
+            return repository.GetDiff(status, true);
         }
 
         public static PatchEntryChanges[] GetUnstagedChanges(this Repository repository)
@@ -79,10 +68,7 @@ namespace HistoriansGuild.Helpers
                 e.State.HasFlag(FileStatus.DeletedFromWorkdir)
             ).ToArray();
 
-            if (status.Length > 0)
-                return repository.GetDiff(status);
-
-            return [];
+            return repository.GetDiff(status, false);
         }
     }
 }
