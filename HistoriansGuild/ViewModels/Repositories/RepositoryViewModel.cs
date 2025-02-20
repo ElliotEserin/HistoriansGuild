@@ -28,8 +28,6 @@ namespace HistoriansGuild.ViewModels.Repositories
 
         void UpdateUI()
         {
-            Debug.WriteLine("Repository changed");
-
             HistoryViewModel = new HistoryViewModel(this.repository);
             StagingViewModel = new StagingViewModel(this.repository);
         }

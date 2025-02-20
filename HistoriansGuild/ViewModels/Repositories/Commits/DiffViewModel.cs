@@ -2,6 +2,8 @@
 using Avalonia.Media;
 using CommunityToolkit.Mvvm.ComponentModel;
 using LibGit2Sharp;
+using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace HistoriansGuild.ViewModels.Repositories.Commits
 {
@@ -20,7 +22,7 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
         {
             Filename = diff.Path;
             Status = diff.Status.ToString();
-            diffInlines = ParseDiff(diff);
+            DiffInlines = ParseDiff(diff);
         }
 
         public InlineCollection ParseDiff(PatchEntryChanges diff)
@@ -29,8 +31,13 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
 
             var lines = diff.Patch.Split('\n');
 
-            foreach (var line in lines)
+            foreach (var fullLine in lines)
             {
+                var line = fullLine;
+
+                if (line.Length > 128)
+                    line = line[..128] + $"... (+{line.Length - 128})";
+
                 //Skip metadata lines
                 if (line.StartsWith("---") || line.StartsWith("+++") || line.StartsWith("@@"))
                 {
@@ -57,7 +64,14 @@ namespace HistoriansGuild.ViewModels.Repositories.Commits
                 {
                     inlines.Add(new Run(line + "\n"));
                 }
+
+                if (inlines.Count >= 128)
+                {
+                    inlines.Add(new Run($"... (+{lines.Length - inlines.Count} more lines)\n"));
+                    return inlines;
+                }
             }
+
             return inlines;
         }
     }
