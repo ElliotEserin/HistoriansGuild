@@ -92,5 +92,18 @@ namespace HistoriansGuild.ViewModels.Repositories
 
             Commands.Unstage(repository, paths);
         }
+
+        [RelayCommand]
+        public void DiscardAll()
+        {
+            foreach (var change in UnstagedChanges)
+            {
+                repository.CheckoutPaths("HEAD", [change.Path], new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force });
+            }
+
+            // Refresh the changes after discarding
+            StagedChanges = repository.GetStagedChanges();
+            UnstagedChanges = repository.GetUnstagedChanges();
+        }
     }
 }

@@ -25,10 +25,13 @@
 				</ListBox>
 			</Grid>
 			<Grid Grid.Row="1" RowDefinitions="32, *">
-				<StackPanel Grid.Row="0" Orientation="Horizontal">
-					<Button Content="Stage All" Command="{Binding StageAllCommand}" />
-					<Button Content="Stage Selected" Command="{Binding StageSelectedCommand}" />
-				</StackPanel>
+				<DockPanel Grid.Row="0">
+					<StackPanel Orientation="Horizontal">
+						<Button Content="Stage All" Command="{Binding StageAllCommand}" />
+						<Button Content="Stage Selected" Command="{Binding StageSelectedCommand}" />
+					</StackPanel>
+					<Button Content="Discard All" Classes="alternate" DockPanel.Dock="Right" HorizontalAlignment="Right" Command="{Binding DiscardAllCommand}" />
+				</DockPanel>
 				<ListBox Grid.Row="1" SelectionMode="Multiple" ItemsSource="{Binding UnstagedChanges}" SelectedItems="{Binding SelectedUnstagedChanges}">
 					<ListBox.ItemTemplate>
 						<DataTemplate DataType="{x:Type git:PatchEntryChanges}">

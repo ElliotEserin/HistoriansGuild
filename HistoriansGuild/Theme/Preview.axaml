@@ -10,6 +10,7 @@
 				<TextBlock Text="Text" />
 				<Label Content="Button:" />
 				<Button Content="Button" />
+				<Button Content="Button" Classes="alternate" />
 				<ListBox>
 					<ListBoxItem>Item 1</ListBoxItem>
 					<ListBoxItem>Item 2</ListBoxItem>
