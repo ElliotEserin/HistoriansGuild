@@ -2,7 +2,9 @@
 using CommunityToolkit.Mvvm.Input;
 using HistoriansGuild.Helpers;
 using LibGit2Sharp;
+using System;
 using System.Diagnostics;
+using System.Linq;
 
 namespace HistoriansGuild.ViewModels.Repositories
 {
@@ -35,6 +37,19 @@ namespace HistoriansGuild.ViewModels.Repositories
         ~RepositoryViewModel()
         {
             watcher.Dispose();
+        }
+
+        [RelayCommand]
+        public void Push()
+        {
+            repository.Network.Push(repository.Head.TrackedBranch);
+        }
+
+        [RelayCommand]
+        public void Pull()
+        {
+            var signature = repository.Config.BuildSignature(DateTimeOffset.Now);
+            Commands.Pull(repository, signature, new PullOptions());
         }
     }
 }

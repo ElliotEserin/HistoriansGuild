@@ -9,8 +9,8 @@
 			 x:DataType="vm:RepositoryViewModel">
 	<Grid RowDefinitions="38, *">
 		<StackPanel Grid.Row="0" Orientation="Horizontal">
-			<Button Content="Push" />
-			<Button Content="Pull" />
+			<Button Content="Push" Command="{Binding PushCommand}" />
+			<Button Content="Pull" Command="{Binding PullCommand}" />
 			<Button Content="Fetch" />
 		</StackPanel>
 		<TabControl Grid.Row="1">
