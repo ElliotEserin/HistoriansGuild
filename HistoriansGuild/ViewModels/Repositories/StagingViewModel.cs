@@ -7,6 +7,7 @@ using LibGit2Sharp;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
+using System.Linq;
 
 namespace HistoriansGuild.ViewModels.Repositories
 {
@@ -100,18 +101,22 @@ namespace HistoriansGuild.ViewModels.Repositories
             Commands.Unstage(repository, paths);
         }
 
-        public bool CanDiscardAll() => UnstagedChanges.Length > 0;
+        //public bool CanDiscardAll() => UnstagedChanges.Length > 0;
+        
+        public bool CanDiscardAll() => false;
         [RelayCommand(CanExecute = nameof(CanDiscardAll))]
         public void DiscardAll()
         {
-            foreach (var change in UnstagedChanges)
-            {
-                repository.CheckoutPaths("HEAD", [change.Path], new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force });
-            }
+            var trackedFilepaths = UnstagedChanges.Where(change => !change.Status.HasFlag(ChangeKind.Untracked)).Select(change => change.Path).ToArray();
 
-            // Refresh the changes after discarding
-            StagedChanges = repository.GetStagedChanges();
-            UnstagedChanges = repository.GetUnstagedChanges();
+            repository.CheckoutPaths("HEAD", trackedFilepaths, new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force });
+
+            var untrackedFilepaths = UnstagedChanges.Where(change => change.Status.HasFlag(ChangeKind.Added)).Select(change => change.Path).ToArray();
+
+            foreach (var filepath in untrackedFilepaths)
+            {
+                Commands.Remove(repository, filepath);
+            }
         }
     }
 }

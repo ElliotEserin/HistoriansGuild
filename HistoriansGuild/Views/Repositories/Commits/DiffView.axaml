@@ -8,7 +8,10 @@
 			 x:DataType="vm:DiffViewModel">
 	<Grid Margin="2">
 		<StackPanel Spacing="4">
-			<TextBlock Foreground="{DynamicResource BackgroundAccentBrush}" Text="{Binding Filename}" />
+			<StackPanel Orientation="Horizontal" Spacing="10">
+				<TextBlock Foreground="{DynamicResource BackgroundAccentBrush}" Text="{Binding Status}" />
+				<TextBlock Foreground="{DynamicResource BackgroundAccentBrush}" Text="{Binding Filename}" />
+			</StackPanel>
 			<Border>
 				<TextBlock Inlines="{Binding DiffInlines}" />
 			</Border>
