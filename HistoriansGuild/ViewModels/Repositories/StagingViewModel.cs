@@ -14,10 +14,10 @@ namespace HistoriansGuild.ViewModels.Repositories
     {
         private readonly Repository repository;
 
-        [ObservableProperty]
+        [ObservableProperty, NotifyCanExecuteChangedFor(nameof(UnstageAllCommand))]
         private PatchEntryChanges[] stagedChanges;
 
-        [ObservableProperty]
+        [ObservableProperty, NotifyCanExecuteChangedFor(nameof(DiscardAllCommand), nameof(StageAllCommand))]
         private PatchEntryChanges[] unstagedChanges;
 
         [ObservableProperty]
@@ -53,15 +53,20 @@ namespace HistoriansGuild.ViewModels.Repositories
             {
                 SelectedChangesViewModels.Add(new DiffViewModel(change));
             }
+
+            StageSelectedCommand.NotifyCanExecuteChanged();
+            UnstageSelectedCommand.NotifyCanExecuteChanged();
         }
 
-        [RelayCommand]
+        public bool CanStageAll() => UnstagedChanges.Length > 0;
+        [RelayCommand(CanExecute = nameof(CanStageAll))]
         public void StageAll()
         {
             Commands.Stage(repository, "*");
         }
 
-        [RelayCommand]
+        public bool CanStageSelected() => SelectedUnstagedChanges.Count > 0;
+        [RelayCommand(CanExecute = nameof(CanStageSelected))]
         public void StageSelected()
         {
             string[] paths = new string[SelectedUnstagedChanges.Count];
@@ -74,13 +79,15 @@ namespace HistoriansGuild.ViewModels.Repositories
             Commands.Stage(repository, paths);
         }
 
-        [RelayCommand]
+        public bool CanUnstageAll() => StagedChanges.Length > 0;
+        [RelayCommand(CanExecute = nameof(CanUnstageAll))]
         public void UnstageAll()
         {
             Commands.Unstage(repository, "*");
         }
 
-        [RelayCommand]
+        public bool CanUnstageSelected() => SelectedStagedChanges.Count > 0;
+        [RelayCommand(CanExecute = nameof(CanUnstageSelected))]
         public void UnstageSelected()
         {
             string[] paths = new string[SelectedStagedChanges.Count];
@@ -93,7 +100,8 @@ namespace HistoriansGuild.ViewModels.Repositories
             Commands.Unstage(repository, paths);
         }
 
-        [RelayCommand]
+        public bool CanDiscardAll() => UnstagedChanges.Length > 0;
+        [RelayCommand(CanExecute = nameof(CanDiscardAll))]
         public void DiscardAll()
         {
             foreach (var change in UnstagedChanges)
