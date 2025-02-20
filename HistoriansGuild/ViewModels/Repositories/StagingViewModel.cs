@@ -4,6 +4,7 @@ using CommunityToolkit.Mvvm.Input;
 using HistoriansGuild.Helpers;
 using HistoriansGuild.ViewModels.Repositories.Commits;
 using LibGit2Sharp;
+using System;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics;
@@ -29,6 +30,9 @@ namespace HistoriansGuild.ViewModels.Repositories
 
         [ObservableProperty]
         private ObservableCollection<DiffViewModel> selectedChangesViewModels = [];
+
+        [ObservableProperty]
+        private string commitMessage = "";
 
         public StagingViewModel(Repository repository)
         {
@@ -117,6 +121,13 @@ namespace HistoriansGuild.ViewModels.Repositories
             {
                 Commands.Remove(repository, filepath);
             }
+        }
+
+        [RelayCommand]
+        public void Commit()
+        {
+            var signature = repository.Config.BuildSignature(DateTimeOffset.Now);
+            repository.Commit(CommitMessage, signature, signature);
         }
     }
 }

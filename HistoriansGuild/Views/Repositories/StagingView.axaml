@@ -43,16 +43,25 @@
 		</Grid>
 		<GridSplitter Grid.Column="1" ResizeDirection="Columns" />
 		<!-- Diffs -->
-		<Border Grid.Column="2">
-			<ScrollViewer HorizontalScrollBarVisibility="Auto">
-				<ItemsControl ItemsSource="{Binding SelectedChangesViewModels}">
-					<ItemsControl.ItemTemplate>
-						<DataTemplate DataType="{x:Type commit:DiffViewModel}">
-							<ContentControl Content="{Binding}" />
-						</DataTemplate>
-					</ItemsControl.ItemTemplate>
-				</ItemsControl>
-			</ScrollViewer>
-		</Border>
+		<Grid RowDefinitions="*, 2, auto" Grid.Column="2">
+			<Border Grid.Row="0">
+				<ScrollViewer HorizontalScrollBarVisibility="Auto">
+					<ItemsControl ItemsSource="{Binding SelectedChangesViewModels}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate DataType="{x:Type commit:DiffViewModel}">
+								<ContentControl Content="{Binding}" />
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+				</ScrollViewer>
+			</Border>
+			<GridSplitter Grid.Row="1" ResizeDirection="Rows" />
+			<Border Grid.Row="2">
+				<StackPanel>
+					<TextBox Text="{Binding CommitMessage}" AcceptsReturn="True" TextWrapping="Wrap" Height="100"/>
+					<Button Content="Commit" Command="{Binding CommitCommand}"/>
+				</StackPanel>
+			</Border>
+		</Grid>
 	</Grid>
 </UserControl>

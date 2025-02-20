@@ -245,4 +245,22 @@
       <Setter Property="Foreground" Value="{DynamicResource BackgroundBrush}" />
     </Style>
   </Style>
+
+	<Style Selector="TextBox">
+		<Setter Property="Background" Value="{DynamicResource BackgroundBrush}" />
+		<Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}" />
+		<Setter Property="Margin" Value="2" />
+		<Setter Property="BorderThickness" Value="2" />
+		<Setter Property="BorderBrush" Value="{DynamicResource BackgroundAccentBrush}" />
+
+		<Style Selector="^:pointerover /template/ Border#border">
+			<Setter Property="BorderBrush" Value="{DynamicResource MediumBrush}" />
+		</Style>
+		<Style Selector="^:focus /template/ Border#border">
+			<Setter Property="BorderBrush" Value="{DynamicResource ForegroundAccentBrush}" />
+		</Style>
+		<Style Selector="^:error /template/ Border#border">
+			<Setter Property="BorderBrush" Value="LightCoral" />
+		</Style>
+	</Style>
 </Styles>
