@@ -1,0 +1,18 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HistoriansGuild.Views.Users.NewUserView"
+			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Users"
+			 x:DataType="vm:NewUserViewModel">
+	<StackPanel VerticalAlignment="Center">
+		<Label Target="username" Content="Username" />
+		<TextBox Name="username" Text="{Binding Username}" />
+		<Label Target="username" Content="Email" />
+		<TextBox Name="email" Text="{Binding Email}" />
+		<Label Target="password" Content="Password" />
+		<TextBox Name="password" Text="{Binding Password}" PasswordChar="*" />
+		<Button Command="{Binding CreateUserCommand}" Content="Create User" />
+	</StackPanel>
+</UserControl>

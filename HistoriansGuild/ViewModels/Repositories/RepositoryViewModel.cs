@@ -4,7 +4,6 @@ using HistoriansGuild.Helpers;
 using LibGit2Sharp;
 using System;
 using System.Diagnostics;
-using System.Linq;
 
 namespace HistoriansGuild.ViewModels.Repositories
 {
@@ -42,7 +41,36 @@ namespace HistoriansGuild.ViewModels.Repositories
         [RelayCommand]
         public void Push()
         {
-            repository.Network.Push(repository.Head.TrackedBranch);
+            var options = new PushOptions
+            {
+                CredentialsProvider = new LibGit2Sharp.Handlers.CredentialsHandler(
+                    (url, user, cred) => new UsernamePasswordCredentials
+                    {
+                        Username = repository.Config.Get<string>(["user", "name"]).Value,
+                        Password = repository.Config.Get<string>(["user", "password"]).Value,
+                    }),
+                OnNegotiationCompletedBeforePush = (push) =>
+                {
+                    Debugger.Log(0, "Repository", $"Push negotiation completed: {push}\n");
+                    return true;
+                },
+                OnPackBuilderProgress = (stage, current, total) =>
+                {
+                    Debugger.Log(0, "Repository", $"Pack builder progress: {stage} {current}/{total}\n");
+                    return true;
+                },
+                OnPushTransferProgress = (current, total, bytes) =>
+                {
+                    Debugger.Log(0, "Repository", $"Push transfer progress: {current}/{total} {bytes}\n");
+                    return true;
+                },
+                OnPushStatusError = (error) =>
+                {
+                    Debugger.Log(0, "Repository", $"Push error: {error}\n");
+                },
+            };
+
+            repository.Network.Push(repository.Head.TrackedBranch, options);
         }
 
         [RelayCommand]

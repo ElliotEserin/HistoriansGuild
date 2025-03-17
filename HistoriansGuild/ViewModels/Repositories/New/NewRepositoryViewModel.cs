@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using LibGit2Sharp;
+using HistoriansGuild.Models;
 using System;
 
 namespace HistoriansGuild.ViewModels.Repositories.New
@@ -21,14 +21,14 @@ namespace HistoriansGuild.ViewModels.Repositories.New
             CurrentViewModel = addRepositoryViewModel;
         }
 
-        void OnRepositoryAdded(object? sender, AddRepositoryViewModel.RepositoryAddedEventArgs e)
+        void OnRepositoryAdded(object? sender, NewRepositoryEventArgs e)
         {
-            NewRepository?.Invoke(this, new NewRepositoryEventArgs(e.AddedRepo));
+            NewRepository?.Invoke(this, e);
         }
+    }
 
-        public class NewRepositoryEventArgs(Repository newRepo) : EventArgs
-        {
-            public Repository NewRepo { get; } = newRepo;
-        }
+    public class NewRepositoryEventArgs(Repository newRepo) : EventArgs
+    {
+        public Repository Repository { get; } = newRepo;
     }
 }

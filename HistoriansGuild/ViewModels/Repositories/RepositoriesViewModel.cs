@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using HistoriansGuild.ViewModels.Repositories.New;
 using LibGit2Sharp;
+using System;
 
 namespace HistoriansGuild.ViewModels.Repositories
 {
@@ -13,15 +14,17 @@ namespace HistoriansGuild.ViewModels.Repositories
         [ObservableProperty]
         private AvaloniaList<Repository> repositories;
 
-        string testRepo = "C:\\Repos\\Personal\\HistoriansGuild";
-
         public RepositoriesViewModel()
         {
-            //TODO load repositories from saved data
-            Repositories = [new Repository(testRepo)];
-            //Repositories = []; 
+            var savedRepos = Models.AppConfig.config.Repositories;
+            Repositories = [];
 
-            if(Repositories.Count <= 0)
+            foreach (var repo in savedRepos)
+            {
+                Repositories.Add(new Repository(repo.Location));
+            }
+
+            if (Repositories.Count <= 0)
             {
                 var newRepositoryViewModel = new NewRepositoryViewModel();
                 newRepositoryViewModel.NewRepository += OnNewRepository;
@@ -29,16 +32,31 @@ namespace HistoriansGuild.ViewModels.Repositories
             }
             else
             {
-                //TODO display current repository
-                //CurrentViewModel = new RepositoryViewModel(Repositories[0]);
-                CurrentViewModel = new RepositoryViewModel(repositories[0]);
+                GoToCurrentRepository();
             }
         }
 
-        void OnNewRepository(object? sender, NewRepositoryViewModel.NewRepositoryEventArgs e)
+        void OnNewRepository(object? sender, NewRepositoryEventArgs e)
         {
-            Repositories.Add(e.NewRepo);
-            CurrentViewModel = new RepositoryViewModel(e.NewRepo);
+            var repository = new Repository(e.Repository.Location);
+            var user = e.Repository.User;
+
+            if(user != null)
+            {
+                repository.Config.Set("user.name", user.Name);
+                repository.Config.Set("user.email", user.Email);
+                repository.Config.Set("user.password", user.Password);
+            }
+
+            Repositories.Add(repository);
+            Models.AppConfig.SetCurrentRepository(Repositories.Count - 1);
+            GoToCurrentRepository();
+        }
+
+        void GoToCurrentRepository()
+        {
+            var repoIndex = Math.Clamp(Models.AppConfig.config.CurrentRepository, 0, Repositories.Count - 1);
+            CurrentViewModel = new RepositoryViewModel(Repositories[repoIndex]);
         }
 
         ~RepositoriesViewModel()

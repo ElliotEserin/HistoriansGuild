@@ -5,9 +5,17 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="HistoriansGuild.Views.Repositories.New.AddRepositoryView"
 			 xmlns:vm="clr-namespace:HistoriansGuild.ViewModels.Repositories.New"
+			 xmlns:m="clr-namespace:HistoriansGuild.Models"
 			 x:DataType="vm:AddRepositoryViewModel">
 	<StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Vertical">
 		<TextBox Watermark="location" Text="{Binding RepositoryLocation}" />
+		<ComboBox ItemsSource="{Binding Users}" SelectedItem="{Binding User}">
+			<ComboBox.ItemTemplate>
+				<DataTemplate x:DataType="m:User">
+					<TextBlock Text="{Binding Name}" />
+				</DataTemplate>
+			</ComboBox.ItemTemplate>
+		</ComboBox>
 		<Button Content="Add" Command="{Binding AddRepositoryCommand}" />
 	</StackPanel>
 </UserControl>

@@ -1,7 +1,8 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using LibGit2Sharp;
+using HistoriansGuild.Models;
 using System;
+using System.Collections.Generic;
 
 namespace HistoriansGuild.ViewModels.Repositories.New
 {
@@ -10,25 +11,32 @@ namespace HistoriansGuild.ViewModels.Repositories.New
         [ObservableProperty]
         private string repositoryLocation = String.Empty;
 
-        public event EventHandler<RepositoryAddedEventArgs>? RepositoryAdded;
+        [ObservableProperty]
+        private User user;
+
+        [ObservableProperty]
+        private List<User> users;
+
+        public event EventHandler<NewRepositoryEventArgs>? RepositoryAdded;
+
+        public AddRepositoryViewModel()
+        {
+            Users = AppConfig.config.Users;
+            User = Users[0];
+        }
 
         [RelayCommand]
         void AddRepository()
         {
-            if (!Repository.IsValid(RepositoryLocation))
+            if (!LibGit2Sharp.Repository.IsValid(RepositoryLocation))
             {
                 //TODO handle invalid repository
                 return;
             }
 
-            var repo = new Repository(RepositoryLocation);
+            var repo = AppConfig.AddRepository(RepositoryLocation, User.Id);
 
-            RepositoryAdded?.Invoke(this, new RepositoryAddedEventArgs(repo));
-        }
-
-        public class RepositoryAddedEventArgs(Repository addedRepo) : EventArgs
-        {
-            public Repository AddedRepo { get; } = addedRepo;
+            RepositoryAdded?.Invoke(this, new NewRepositoryEventArgs(repo));
         }
     }
 }
