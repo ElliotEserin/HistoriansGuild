@@ -69,8 +69,9 @@ namespace HistoriansGuild.ViewModels.Repositories
                     Debugger.Log(0, "Repository", $"Push error: {error}\n");
                 },
             };
-
-            repository.Network.Push(repository.Head.TrackedBranch, options);
+            Debugger.Log(0, "Repository", $"Target branch: {repository.Head.TrackedBranch}\n");
+            repository.Network.Push(repository.Head, options);
+            Debugger.Log(0, "Repository", "Push completed\n");
         }
 
         [RelayCommand]
